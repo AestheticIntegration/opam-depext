@@ -152,7 +152,7 @@ let install_packages_commands ~interactive packages =
     if distribution = "freebsd" then ["pkg"::"install"::packages]
     else ["pkg_add"::packages]
   | "archlinux" | "arch" ->
-    ["pacman"::"-S"::packages]
+    ["pacman"::"-S"::"--noconfirm"::packages]
   | "gentoo" ->
     ["emerge"::packages]
   | "alpine" ->
