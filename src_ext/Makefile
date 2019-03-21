@@ -1,11 +1,9 @@
 SHELL=sh
-FETCH=curl -OL
 OCAML=ocaml
 OCAMLC=ocamlc
 OCAMLOPT=ocamlopt
-SRC_EXTS = cmdliner 
+SRC_EXTS = cmdliner
 
-URL_cmdliner = http://erratique.ch/software/cmdliner/releases/cmdliner-0.9.8.tbz
 MD5_cmdliner = fc67c937447cc223722f1419fa2189da
 
 ARCHIVES = $(foreach lib,$(SRC_EXTS),$(notdir $(URL_$(lib))))
@@ -29,24 +27,9 @@ clone: $(SRC_EXTS:=.stamp)
 archives: $(SRC_EXTS:=.download)
 	@
 
-define cache_url
-https://opam.ocaml.org/2.0~dev/cache/md5/$(shell echo $(MD5_$(1)) | cut -c -2)/$(MD5_$(1))
-endef
-
-define get_from_cache
-{ $(FETCH) $(call cache_url,$(1)) && \
-  mv $(MD5_$(1)) $(notdir $(URL_$(1))) && \
-  $(MD5CHECK) $(notdir $(URL_$(1))) $(MD5_$(1)); }
-endef
-
-%.download:
-	[ -e  $(notdir $(URL_$*)) ] || \
-	$(FETCH) $(URL_$*) && $(MD5CHECK) $(notdir $(URL_$*)) $(MD5_$*) || \
-	$(call get_from_cache,$*)
-
-%.stamp: %.download
+%.stamp:
 	mkdir -p tmp
-	cd tmp && $(if $(patsubst %.tar.gz,,$(URL_$*)),bunzip2,gunzip) -c ../$(notdir $(URL_$*)) | tar xf -
+	cd tmp && bunzip2 -c ../cmdliner-0.9.8.tbz | tar xf -
 	rm -rf $*
 	@for ii in tmp/*; do if [ -d $${ii} ]; then mv $${ii} $*; fi; done; \
 	rm -rf tmp

@@ -12,6 +12,5 @@ shell/build.sh
 src_ext/._bcdi/
 src_ext/._d/
 src_ext/._ncdi/
-src_ext/cmdliner-0.9.8.tbz
 src_ext/cmdliner/
 .*.swp
